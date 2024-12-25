@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+header {
+  z-index: 1030; 
+  padding: 19px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h3 {
+  font-family: "Zen Dots", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+aside {
+  z-index: 1020; 
+  height: 100%;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+aside ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-link i {
+  font-size: 1.2rem;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}

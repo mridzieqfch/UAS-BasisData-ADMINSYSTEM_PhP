@@ -1,0 +1,100 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  /* background: linear-gradient(120deg, #2980b9, #6dd5fa, #ffffff); */
+  background-image: url(../dashboard/img/index.jpg);
+  background-size: 110% 90%;
+  animation: gradientBG 15s ease infinite;
+  margin: 0;
+  padding: 0;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 20px;
+}
+
+.hero-content {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 1.5s ease;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.btn-custom {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 40px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.9s ease;
+}
+
+.btn-custom:hover {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  transform: scale(1.05);
+}
+
+nav {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+  padding-left: 35px;
+  font-weight: bold;
+  font-size: 1.8rem;
+  color: #00000087;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #000;
+}
+
+footer {
+  background-color: #ffffff;
+  padding: 20px 0;
+  color: #000000;
+  font-size: 1rem;
+  text-align: center;
+}
+
+footer a {
+  color: #8bbfff;
+  text-decoration: none;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
