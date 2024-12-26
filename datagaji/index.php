@@ -10,6 +10,7 @@ if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
 }
 
 $sukses_message = "";
+$eror_message = "";
 
 // Proses penambahan data
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -24,10 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $query = "INSERT INTO tb_gaji (ID_Gaji, ID_Karyawan, Gaji_Pokok, Bonus, Potongan, Tanggal_Pembayaran) 
             VALUES ('$id_gaji', '$id_karyawan', '$gaji_pokok', '$bonus', '$potongan', '$tanggal_pembayaran')";
 
-        if (mysqli_query($db, $query)) {
-            $sukses_message = "Data berhasil ditambahkan.";
+        // Periksa apakah ID_Gaji sudah ada
+        $check_query = "SELECT * FROM tb_gaji WHERE ID_Gaji = '$id_gaji'";
+        $check_result = mysqli_query($db, $check_query);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            $eror_message = "ID Gaji '$id_gaji' sudah ada. Silakan gunakan ID Gaji yang berbeda.";
         } else {
-            $error_message = "Error pada query: " . mysqli_error($db);
+            // Lanjutkan dengan query insert
+            $query = "INSERT INTO tb_gaji (ID_Gaji, ID_Karyawan, Gaji_Pokok, Bonus, Potongan, Tanggal_Pembayaran) 
+                VALUES ('$id_gaji', '$id_karyawan', '$gaji_pokok', '$bonus', '$potongan', '$tanggal_pembayaran')";
+
+            if (mysqli_query($db, $query)) {
+                $sukses_message = "Data berhasil ditambahkan.";
+            } else {
+                $error_message = "Error pada query: " . mysqli_error($db);
+            }
         }
     } else {
         $error_message = "Semua input wajib diisi.";
@@ -113,6 +126,11 @@ $data_gaji = mysqli_query($db, "
                         <?php if ($sukses_message): ?>
                             <div class="alert alert-success" role="alert">
                                 <?= htmlspecialchars($sukses_message); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($eror_message): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?= htmlspecialchars($eror_message); ?>
                             </div>
                         <?php endif; ?>
                         <button type="submit" class="btn btn-info">Tambahkan Data</button>
