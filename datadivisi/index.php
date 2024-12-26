@@ -8,18 +8,27 @@ if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
 }
 
 $sukses_message = "";
+$eror_message = "";
 
 // Menangani form input untuk menambahkan data divisi
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_divisi'], $_POST['nama_divisi'])) {
     $id_divisi = $_POST['id_divisi'];
     $nama_divisi = $_POST['nama_divisi'];
 
-    // Query untuk menyimpan data ke database
-    $query = "INSERT INTO tb_divisi (ID_Divisi, Nama_Divisi) VALUES ('$id_divisi', '$nama_divisi')";
-    if (mysqli_query($db, $query)) {
-        $sukses_message = "Data divisi berhasil diinput"; 
+    $check_query = "SELECT * FROM tb_divisi WHERE ID_Divisi = '$id_divisi'";
+    $check_result = mysqli_query($db, $check_query);
+
+    if (mysqli_num_rows($check_result) > 0) {
+        $eror_message = "ID Divisi '$id_divisi' sudah ada. Silakan gunakan ID Divisi yang berbeda.";
     } else {
-        $error_message = "Gagal menambahkan data"; 
+        // Lanjutkan dengan query insert
+        $query = "INSERT INTO tb_divisi (ID_Divisi, Nama_Divisi) VALUES ('$id_divisi', '$nama_divisi')";
+
+        if (mysqli_query($db, $query)) {
+            $sukses_message = "Data divisi berhasil diinput"; 
+        } else {
+            $error_message = "Gagal menambahkan data"; 
+        }
     }
 }
 
@@ -68,6 +77,11 @@ $data_divisi = mysqli_query($db, "SELECT * FROM tb_divisi") or die(mysqli_error(
                         <?php if ($sukses_message): ?>
                             <div class="alert alert-success" role="alert">
                                 <?php echo $sukses_message; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($eror_message): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?= htmlspecialchars($eror_message); ?>
                             </div>
                         <?php endif; ?>
                         <button type="submit" class="btn btn-info">Tambahkan Data</button>

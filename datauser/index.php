@@ -7,8 +7,8 @@ if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
     exit;
 }
 
-// Variabel untuk pesan sukses
 $sukses_message = "";
+$eror_message = "";
 
 // Menangani form input untuk menambahkan data user
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'], $_POST['password'])) {
@@ -16,11 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'], $_POST['pa
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     // Query untuk menyimpan data ke database
-    $query = "INSERT INTO tb_users (username, password) VALUES ('$username', '$password')";
-    if (mysqli_query($db, $query)) {
-        $sukses_message = "Data admin berhasil diinput";  
+    // $query = "INSERT INTO tb_users (username, password) VALUES ('$username', '$password')";
+    $check_query = "SELECT * FROM tb_users WHERE username = '$username'";
+    $check_result = mysqli_query($db, $check_query);
+
+    if (mysqli_num_rows($check_result) > 0) {
+        $eror_message = "Username '$username' sudah ada. Silakan gunakan Username yang berbeda.";
     } else {
-        $error_message = "Gagal menambahkan data";
+        // Lanjutkan dengan query insert
+        $query = "INSERT INTO tb_users (username, password) VALUES ('$username', '$password')";
+
+        if (mysqli_query($db, $query)) {
+            $sukses_message = "Data admin berhasil diinput";  
+        } else {
+            $error_message = "Gagal menambahkan data";
+        }
     }
 }
 
@@ -70,6 +80,11 @@ $data_users = mysqli_query($db, "SELECT * FROM tb_users") or die(mysqli_error($d
                         <?php if ($sukses_message): ?>
                             <div class="alert alert-success" role="alert">
                                 <?php echo $sukses_message; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($eror_message): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?= htmlspecialchars($eror_message); ?>
                             </div>
                         <?php endif; ?>
                         <button type="submit" class="btn btn-info">Tambahkan Data</button>
